@@ -1,0 +1,1053 @@
+-- MySQL Workbench Forward Engineering
+
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
+
+-- -----------------------------------------------------
+-- Schema mydb
+-- -----------------------------------------------------
+-- -----------------------------------------------------
+-- Schema bd_sae_siua_2017_v1
+-- -----------------------------------------------------
+
+-- -----------------------------------------------------
+-- Schema bd_sae_siua_2017_v1
+-- -----------------------------------------------------
+CREATE SCHEMA IF NOT EXISTS `bd_sae_siua_2017_v1` DEFAULT CHARACTER SET latin1 ;
+USE `bd_sae_siua_2017_v1` ;
+
+-- -----------------------------------------------------
+-- Table `bd_sae_siua_2017_v1`.`tab_compromisos`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `bd_sae_siua_2017_v1`.`tab_compromisos` (
+  `Id_Compr` INT(11) NOT NULL AUTO_INCREMENT,
+  `Numero_Compr` VARCHAR(50) NULL DEFAULT NULL,
+  `Activo_Compr` CHAR(1) NULL DEFAULT NULL,
+  PRIMARY KEY (`Id_Compr`))
+ENGINE = InnoDB
+AUTO_INCREMENT = 71
+DEFAULT CHARACTER SET = latin1;
+
+
+-- -----------------------------------------------------
+-- Table `bd_sae_siua_2017_v1`.`tab_partidas`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `bd_sae_siua_2017_v1`.`tab_partidas` (
+  `Id_Parti` INT(11) NOT NULL AUTO_INCREMENT,
+  `Numero_Parti` VARCHAR(45) NULL DEFAULT NULL,
+  `Activo_Parti` CHAR(1) NULL DEFAULT NULL,
+  PRIMARY KEY (`Id_Parti`))
+ENGINE = InnoDB
+AUTO_INCREMENT = 15
+DEFAULT CHARACTER SET = latin1;
+
+
+-- -----------------------------------------------------
+-- Table `bd_sae_siua_2017_v1`.`tab_proveedores`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `bd_sae_siua_2017_v1`.`tab_proveedores` (
+  `Id_Prove` INT(11) NOT NULL AUTO_INCREMENT,
+  `Nombre_Prove` VARCHAR(200) NULL DEFAULT NULL,
+  `Activo_Prove` CHAR(1) NULL DEFAULT NULL,
+  PRIMARY KEY (`Id_Prove`))
+ENGINE = InnoDB
+AUTO_INCREMENT = 73
+DEFAULT CHARACTER SET = latin1;
+
+
+-- -----------------------------------------------------
+-- Table `bd_sae_siua_2017_v1`.`tab_ordenes_compras`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `bd_sae_siua_2017_v1`.`tab_ordenes_compras` (
+  `Id_OC` INT(11) NOT NULL AUTO_INCREMENT,
+  `Id_Prove_OC` INT(11) NULL DEFAULT NULL,
+  `Id_Parti_OC` INT(11) NULL DEFAULT NULL,
+  `Id_Compr_OC` INT(11) NULL DEFAULT NULL,
+  `Numero_OC` VARCHAR(50) NULL DEFAULT NULL,
+  `Fecha_OC` DATE NULL DEFAULT NULL,
+  `Anno_OC` VARCHAR(4) NULL DEFAULT NULL,
+  `Activo_OC` CHAR(1) NULL DEFAULT NULL,
+  PRIMARY KEY (`Id_OC`),
+  INDEX `fk_tab_ordenes_compras_tab_proveedores_idx` (`Id_Prove_OC` ASC),
+  INDEX `fk_tab_ordenes_compras_tab_partidas1_idx` (`Id_Parti_OC` ASC),
+  INDEX `fk_tab_ordenes_compras_tab_compromisos1_idx` (`Id_Compr_OC` ASC),
+  CONSTRAINT `fk_tab_ordenes_compras_tab_compromisos1`
+    FOREIGN KEY (`Id_Compr_OC`)
+    REFERENCES `bd_sae_siua_2017_v1`.`tab_compromisos` (`Id_Compr`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_tab_ordenes_compras_tab_partidas1`
+    FOREIGN KEY (`Id_Parti_OC`)
+    REFERENCES `bd_sae_siua_2017_v1`.`tab_partidas` (`Id_Parti`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_tab_ordenes_compras_tab_proveedores`
+    FOREIGN KEY (`Id_Prove_OC`)
+    REFERENCES `bd_sae_siua_2017_v1`.`tab_proveedores` (`Id_Prove`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+AUTO_INCREMENT = 136
+DEFAULT CHARACTER SET = latin1;
+
+
+-- -----------------------------------------------------
+-- Table `bd_sae_siua_2017_v1`.`tab_transferencias`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `bd_sae_siua_2017_v1`.`tab_transferencias` (
+  `Id_Trans` INT(11) NOT NULL AUTO_INCREMENT,
+  `Numero_Trans` VARCHAR(45) NULL DEFAULT NULL,
+  `Activo_Trans` CHAR(1) NULL DEFAULT NULL,
+  PRIMARY KEY (`Id_Trans`))
+ENGINE = InnoDB
+AUTO_INCREMENT = 51
+DEFAULT CHARACTER SET = latin1;
+
+
+-- -----------------------------------------------------
+-- Table `bd_sae_siua_2017_v1`.`tab_facturas`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `bd_sae_siua_2017_v1`.`tab_facturas` (
+  `Id_Factu` INT(11) NOT NULL AUTO_INCREMENT,
+  `Id_Trans_Factu` INT(11) NULL DEFAULT NULL,
+  `Id_OC_Factu` INT(11) NOT NULL,
+  `Numero_Factu` VARCHAR(45) NULL DEFAULT NULL,
+  `Fecha_Factu` DATE NULL DEFAULT NULL,
+  `Activo_Factu` CHAR(1) NULL DEFAULT NULL,
+  PRIMARY KEY (`Id_Factu`),
+  INDEX `fk_tab_facturas_tab_transferencias1_idx` (`Id_Trans_Factu` ASC),
+  INDEX `fk_tab_facturas_tab_ordenes_compras1_idx` (`Id_OC_Factu` ASC),
+  CONSTRAINT `fk_tab_facturas_tab_ordenes_compras1`
+    FOREIGN KEY (`Id_OC_Factu`)
+    REFERENCES `bd_sae_siua_2017_v1`.`tab_ordenes_compras` (`Id_OC`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_tab_facturas_tab_transferencias1`
+    FOREIGN KEY (`Id_Trans_Factu`)
+    REFERENCES `bd_sae_siua_2017_v1`.`tab_transferencias` (`Id_Trans`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+AUTO_INCREMENT = 208
+DEFAULT CHARACTER SET = latin1;
+
+
+-- -----------------------------------------------------
+-- Table `bd_sae_siua_2017_v1`.`tab_centros_trabajos`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `bd_sae_siua_2017_v1`.`tab_centros_trabajos` (
+  `Id_CT` INT(11) NOT NULL AUTO_INCREMENT COMMENT 'id del centro de trabajo',
+  `Nombre_CT` VARCHAR(200) NULL DEFAULT NULL COMMENT 'Nombre del centro de trabajo',
+  `Diminutivo_CT` VARCHAR(45) NULL DEFAULT NULL COMMENT 'Diminutivo del centro de trabajo',
+  `Logo_CT` VARCHAR(45) NULL DEFAULT NULL COMMENT 'Logo del centro de trabajo',
+  `Telefono_CT` VARCHAR(9) NULL DEFAULT NULL COMMENT 'Telefono del centro de trabajo',
+  `Fax_CT` VARCHAR(9) NULL DEFAULT NULL COMMENT 'Fax del centro de trabajo',
+  `Direccion_CT` BLOB NULL DEFAULT NULL,
+  `Correo_CT` VARCHAR(100) NULL DEFAULT NULL COMMENT 'Correo del centro de trabajo',
+  `Latitud_CT` VARCHAR(20) NULL DEFAULT NULL COMMENT 'Latitud del centro de trabajo',
+  `Longitud_CT` VARCHAR(20) NULL DEFAULT NULL COMMENT 'Longitud centro de trabajo',
+  `Activo_CT` CHAR(1) NULL DEFAULT NULL COMMENT '1=activo\n0=Inactivo\n',
+  PRIMARY KEY (`Id_CT`))
+ENGINE = InnoDB
+AUTO_INCREMENT = 2
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `bd_sae_siua_2017_v1`.`tab_universidades`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `bd_sae_siua_2017_v1`.`tab_universidades` (
+  `Id_Uni` INT(11) NOT NULL AUTO_INCREMENT COMMENT 'Id de Universidad',
+  `Id_CT_Uni` INT(11) NOT NULL COMMENT 'ID del centro de trabajo',
+  `Nombre_Uni` VARCHAR(200) NULL DEFAULT NULL COMMENT 'Nombre de la universidad',
+  `Diminutivo_Uni` VARCHAR(45) NULL DEFAULT NULL COMMENT 'Diminutivo de la universidad',
+  `Logo_Uni` VARCHAR(45) NULL DEFAULT NULL COMMENT 'Logo de la universidad',
+  `Telefono_Uni` VARCHAR(9) NULL DEFAULT NULL COMMENT 'Telefono de la universidad',
+  `Fax_Uni` VARCHAR(9) NULL DEFAULT NULL COMMENT 'Fax de la universidad',
+  `Direccion_Uni` BLOB NULL DEFAULT NULL COMMENT 'Direccion fisica de la universidad',
+  `Correo_Uni` VARCHAR(100) NULL DEFAULT NULL COMMENT 'Correo de la universidad\n',
+  `Latitud_Uni` VARCHAR(20) NULL DEFAULT NULL COMMENT 'Latitud de la universidad',
+  `Longitud_Uni` VARCHAR(20) NULL DEFAULT NULL COMMENT 'Longitud de la universidad',
+  `Activo_Uni` CHAR(1) NULL DEFAULT NULL COMMENT '1=activa\n0=inactiva',
+  PRIMARY KEY (`Id_Uni`),
+  INDEX `fk_tab_universidades_tab_centros_trabajos1_idx` (`Id_CT_Uni` ASC),
+  CONSTRAINT `fk_tab_universidades_tab_centros_trabajos1`
+    FOREIGN KEY (`Id_CT_Uni`)
+    REFERENCES `bd_sae_siua_2017_v1`.`tab_centros_trabajos` (`Id_CT`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+AUTO_INCREMENT = 7
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `bd_sae_siua_2017_v1`.`tab_roles`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `bd_sae_siua_2017_v1`.`tab_roles` (
+  `Id_Rol` SMALLINT(5) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'Id del Perfil',
+  `Nombre_Rol` VARCHAR(50) NULL DEFAULT NULL COMMENT 'Nombre del perfil',
+  `Activo_Rol` CHAR(1) NULL DEFAULT NULL COMMENT '1=Activo\n0=Inactivo',
+  PRIMARY KEY (`Id_Rol`))
+ENGINE = InnoDB
+AUTO_INCREMENT = 28
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `bd_sae_siua_2017_v1`.`tab_paises`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `bd_sae_siua_2017_v1`.`tab_paises` (
+  `Id_Pai` SMALLINT(5) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'Id del Pais',
+  `Nombre_Pai` VARCHAR(60) NULL DEFAULT NULL COMMENT 'Nombre del Pais',
+  `Codigo_Pai` VARCHAR(5) NULL DEFAULT NULL COMMENT 'Codigo Internacional del Pais',
+  `Continente_Pai` VARCHAR(2) NULL DEFAULT NULL COMMENT 'Nombre del continente',
+  `Bandera_Peq_Pai` VARCHAR(40) NULL DEFAULT NULL,
+  `Bandera_Gra_Pai` VARCHAR(40) NULL DEFAULT NULL,
+  `ISO2_Pai` VARCHAR(2) NULL DEFAULT NULL COMMENT 'ISO 3166-1 Codigo Alfa-2',
+  `ISO3_Pai` VARCHAR(3) NULL DEFAULT NULL COMMENT 'ISO 3166-1 Codigo Alfa-2',
+  `Latitud_Pai` VARCHAR(20) NULL DEFAULT NULL,
+  `Longitud_Pai` VARCHAR(20) NULL DEFAULT NULL,
+  `Activo_Pai` CHAR(1) NULL DEFAULT NULL COMMENT '1=Activo\n0=Inactivo',
+  PRIMARY KEY (`Id_Pai`))
+ENGINE = InnoDB
+AUTO_INCREMENT = 250
+DEFAULT CHARACTER SET = utf8
+COMMENT = 'Tabla de Paises';
+
+
+-- -----------------------------------------------------
+-- Table `bd_sae_siua_2017_v1`.`tab_provincias`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `bd_sae_siua_2017_v1`.`tab_provincias` (
+  `Id_Pro` MEDIUMINT(8) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'Id de la provincia',
+  `Id_Pai_Pro` SMALLINT(5) UNSIGNED NOT NULL COMMENT 'ID del pais al que pertence la provincia',
+  `Nombre_Pro` VARCHAR(60) NULL DEFAULT NULL COMMENT 'Nombre de la provincia',
+  `Bandera_Peq_Pro` VARCHAR(40) NULL DEFAULT NULL,
+  `Bandera_Gra_Pro` VARCHAR(40) NULL DEFAULT NULL,
+  `Latitud_Pro` VARCHAR(20) NULL DEFAULT NULL,
+  `Longitud_Pro` VARCHAR(20) NULL DEFAULT NULL,
+  `ISO2_Pro` VARCHAR(5) NULL DEFAULT NULL,
+  `Activo_Pro` CHAR(1) NULL DEFAULT NULL COMMENT '1=Activo\n0=Inactivo',
+  PRIMARY KEY (`Id_Pro`),
+  INDEX `fk_tab_provincia_tab_paises1_idx` (`Id_Pai_Pro` ASC),
+  CONSTRAINT `fk_tab_provincia_tab_paises1`
+    FOREIGN KEY (`Id_Pai_Pro`)
+    REFERENCES `bd_sae_siua_2017_v1`.`tab_paises` (`Id_Pai`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+AUTO_INCREMENT = 9
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `bd_sae_siua_2017_v1`.`tab_cantones`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `bd_sae_siua_2017_v1`.`tab_cantones` (
+  `Id_Can` MEDIUMINT(8) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'Id de canton',
+  `Id_Pro_Can` MEDIUMINT(8) UNSIGNED NOT NULL COMMENT 'Id de la provincia a la que pertene el canton',
+  `Nombre_Can` VARCHAR(60) NULL DEFAULT NULL COMMENT 'Nombre del cantÃ³n',
+  `Bandera_Peq_Can` VARCHAR(40) NULL DEFAULT NULL,
+  `Bandera_Gra_Can` VARCHAR(40) NULL DEFAULT NULL,
+  `Latitud_Can` VARCHAR(20) NULL DEFAULT NULL,
+  `Longitud_Can` VARCHAR(20) NULL DEFAULT NULL,
+  `Activo_Can` CHAR(1) NULL DEFAULT NULL COMMENT '1=activo\n0=inactivo\n',
+  PRIMARY KEY (`Id_Can`),
+  INDEX `fk_tab_canton_tab_provincia1_idx` (`Id_Pro_Can` ASC),
+  CONSTRAINT `fk_tab_canton_tab_provincia1`
+    FOREIGN KEY (`Id_Pro_Can`)
+    REFERENCES `bd_sae_siua_2017_v1`.`tab_provincias` (`Id_Pro`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+AUTO_INCREMENT = 82
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `bd_sae_siua_2017_v1`.`tab_distritos`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `bd_sae_siua_2017_v1`.`tab_distritos` (
+  `Id_Dist` MEDIUMINT(8) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'Id del distrito\n',
+  `Id_Can_Dist` MEDIUMINT(8) UNSIGNED NOT NULL COMMENT 'Id del canton al que pertene el distrito',
+  `Nombre_Dist` VARCHAR(60) NULL DEFAULT NULL COMMENT 'Nombre del distrito',
+  `Bandera_Peq_Dist` VARCHAR(40) NULL DEFAULT NULL,
+  `Bandera_Gra_Dist` VARCHAR(40) NULL DEFAULT NULL,
+  `Latitud_Dist` VARCHAR(20) NULL DEFAULT NULL,
+  `Longitud_Dist` VARCHAR(20) NULL DEFAULT NULL,
+  `Activo_Dist` CHAR(1) NULL DEFAULT NULL COMMENT '1=activo\n0=inactivo',
+  PRIMARY KEY (`Id_Dist`),
+  INDEX `fk_tab_distrito_tab_canton1_idx` (`Id_Can_Dist` ASC),
+  CONSTRAINT `fk_tab_distrito_tab_canton1`
+    FOREIGN KEY (`Id_Can_Dist`)
+    REFERENCES `bd_sae_siua_2017_v1`.`tab_cantones` (`Id_Can`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+AUTO_INCREMENT = 474
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `bd_sae_siua_2017_v1`.`tab_grados_academicos`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `bd_sae_siua_2017_v1`.`tab_grados_academicos` (
+  `Id_GA` TINYINT(3) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'Id de grado academico',
+  `Nombre_GA` VARCHAR(200) NULL DEFAULT NULL COMMENT 'Nombre del grado academico',
+  `Diminutivo_GA` VARCHAR(45) NULL DEFAULT NULL,
+  `Activo_GA` CHAR(1) NULL DEFAULT NULL COMMENT '1=activo\n0=inactivo',
+  PRIMARY KEY (`Id_GA`))
+ENGINE = InnoDB
+AUTO_INCREMENT = 25
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `bd_sae_siua_2017_v1`.`tab_personas`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `bd_sae_siua_2017_v1`.`tab_personas` (
+  `Id_Per` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `Cedula_Per` VARCHAR(16) NOT NULL,
+  `Tipo_Identificacion_Per` CHAR(1) NULL DEFAULT NULL COMMENT '1=cedula\n2=Residencia\n3=Pasaporte',
+  `Id_Pai_Per` SMALLINT(5) UNSIGNED NULL DEFAULT NULL,
+  `Id_Pro_Per` MEDIUMINT(8) UNSIGNED NULL DEFAULT NULL,
+  `Id_Can_Per` MEDIUMINT(8) UNSIGNED NULL DEFAULT NULL,
+  `Id_Dist_Per` MEDIUMINT(8) UNSIGNED NULL DEFAULT NULL,
+  `Id_GA_Per` TINYINT(3) UNSIGNED NULL DEFAULT NULL,
+  `Nombre_Per` VARCHAR(60) NULL DEFAULT NULL COMMENT 'Nombre de la persona',
+  `Apellido1_Per` VARCHAR(50) NULL DEFAULT NULL COMMENT 'Primer Apellido',
+  `Apellido2_Per` VARCHAR(50) NULL DEFAULT NULL COMMENT 'Segundo apellido',
+  `Genero_Per` CHAR(1) NULL DEFAULT NULL COMMENT '1=Masculino\n2=Femenino',
+  `Direccion_Per` BLOB NULL DEFAULT NULL COMMENT 'Direccion fisica de la persona',
+  `Fecha_Nacimiento_Per` DATE NULL DEFAULT NULL COMMENT 'Fecha de Nacimiento de la persona\n',
+  `Foto_Per` VARCHAR(45) NULL DEFAULT NULL COMMENT 'Foto de la persona',
+  `Activo_Per` CHAR(1) NULL DEFAULT NULL COMMENT '1=activo\n0=inactivo',
+  PRIMARY KEY (`Id_Per`),
+  INDEX `fk_tab_personas_tab_paises1_idx` (`Id_Pai_Per` ASC),
+  INDEX `fk_tab_personas_tab_provincias1_idx` (`Id_Pro_Per` ASC),
+  INDEX `fk_tab_personas_tab_cantones1_idx` (`Id_Can_Per` ASC),
+  INDEX `fk_tab_personas_tab_distritos1_idx` (`Id_Dist_Per` ASC),
+  INDEX `fk_tab_personas_tab_grados_academicos1_idx` (`Id_GA_Per` ASC),
+  CONSTRAINT `fk_tab_personas_tab_cantones1`
+    FOREIGN KEY (`Id_Can_Per`)
+    REFERENCES `bd_sae_siua_2017_v1`.`tab_cantones` (`Id_Can`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_tab_personas_tab_distritos1`
+    FOREIGN KEY (`Id_Dist_Per`)
+    REFERENCES `bd_sae_siua_2017_v1`.`tab_distritos` (`Id_Dist`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_tab_personas_tab_grados_academicos1`
+    FOREIGN KEY (`Id_GA_Per`)
+    REFERENCES `bd_sae_siua_2017_v1`.`tab_grados_academicos` (`Id_GA`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_tab_personas_tab_paises1`
+    FOREIGN KEY (`Id_Pai_Per`)
+    REFERENCES `bd_sae_siua_2017_v1`.`tab_paises` (`Id_Pai`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_tab_personas_tab_provincias1`
+    FOREIGN KEY (`Id_Pro_Per`)
+    REFERENCES `bd_sae_siua_2017_v1`.`tab_provincias` (`Id_Pro`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+AUTO_INCREMENT = 75
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `bd_sae_siua_2017_v1`.`tab_preguntas`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `bd_sae_siua_2017_v1`.`tab_preguntas` (
+  `Id_Preg` TINYINT(3) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'Id de la pregunta',
+  `Pregunta_Preg` VARCHAR(150) NULL DEFAULT NULL COMMENT 'Pregunta para la recuperacion de claves',
+  `Activo_Preg` CHAR(1) NULL DEFAULT NULL COMMENT '1=activo\n0=inactivo',
+  PRIMARY KEY (`Id_Preg`))
+ENGINE = InnoDB
+AUTO_INCREMENT = 3
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `bd_sae_siua_2017_v1`.`tab_usuarios`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `bd_sae_siua_2017_v1`.`tab_usuarios` (
+  `Id_Per_Usu` INT(10) UNSIGNED NOT NULL,
+  `Id_Rol_Usu` SMALLINT(5) UNSIGNED NOT NULL COMMENT 'Perfil del Usuario',
+  `Id_Preg_Usu` TINYINT(3) UNSIGNED NOT NULL COMMENT 'Id de pregunta para recuperacion de contraseÃ±a',
+  `Password_Usu` VARCHAR(100) NULL DEFAULT NULL COMMENT 'ContraseÃ±a de usuario',
+  `Estado_Conexion_Usu` TINYINT(1) NULL DEFAULT NULL COMMENT '1=conectado\n0=Inactivo',
+  `Fecha_Hora_Conexion_Usu` DATETIME NULL DEFAULT NULL COMMENT 'Fecha y hora de ultima conexion del usuario',
+  `Respuesta_Preg_Usu` VARCHAR(100) NULL DEFAULT NULL COMMENT 'Respuesta de la pregunta para la recuperacion',
+  `Cambio_Contrasena_Usu` TINYINT(1) NULL DEFAULT NULL COMMENT '1=Solicito cambio de contraseÃ±a\n0=no lo solicito',
+  `Key_Usu` VARCHAR(45) NULL DEFAULT NULL COMMENT 'Llave unica de cada conexion seguridad',
+  `Nombre_Session_Usu` VARCHAR(100) NULL DEFAULT NULL COMMENT 'Nombre unico de session por usuario',
+  `URL_Usu` BLOB NULL DEFAULT NULL COMMENT 'URL generada dinamicamente por el sistema seguridad',
+  `Cookie_Usu` VARCHAR(100) NULL DEFAULT NULL,
+  `Activo_Usu` CHAR(1) NULL DEFAULT NULL COMMENT '1=activo\n0=inactivo',
+  PRIMARY KEY (`Id_Per_Usu`),
+  INDEX `fk_tab_usuarios_tab_perfiles1_idx` (`Id_Rol_Usu` ASC),
+  INDEX `fk_tab_usuarios_tab_preguntas1_idx` (`Id_Preg_Usu` ASC),
+  INDEX `fk_tab_usuarios_tab_personas1_idx` (`Id_Per_Usu` ASC),
+  CONSTRAINT `fk_tab_usuarios_tab_perfiles1`
+    FOREIGN KEY (`Id_Rol_Usu`)
+    REFERENCES `bd_sae_siua_2017_v1`.`tab_roles` (`Id_Rol`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_tab_usuarios_tab_personas1`
+    FOREIGN KEY (`Id_Per_Usu`)
+    REFERENCES `bd_sae_siua_2017_v1`.`tab_personas` (`Id_Per`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_tab_usuarios_tab_preguntas1`
+    FOREIGN KEY (`Id_Preg_Usu`)
+    REFERENCES `bd_sae_siua_2017_v1`.`tab_preguntas` (`Id_Preg`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `bd_sae_siua_2017_v1`.`tab_zonas_tmp`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `bd_sae_siua_2017_v1`.`tab_zonas_tmp` (
+  `Id_Zonas_tmp` INT(11) NOT NULL AUTO_INCREMENT,
+  `Nombre_Zonas_tmp` VARCHAR(100) NULL DEFAULT NULL,
+  `Activo_Zonas_tmp` CHAR(1) NULL DEFAULT NULL,
+  PRIMARY KEY (`Id_Zonas_tmp`))
+ENGINE = InnoDB
+AUTO_INCREMENT = 127
+DEFAULT CHARACTER SET = latin1;
+
+
+-- -----------------------------------------------------
+-- Table `bd_sae_siua_2017_v1`.`tab_Activos`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `bd_sae_siua_2017_v1`.`tab_Activos` (
+  `Id_Act` INT(11) NOT NULL AUTO_INCREMENT,
+  `Id_Zonas_tmp_Act` INT(11) NOT NULL,
+  `Id_INS_Act` VARCHAR(45) NULL DEFAULT NULL,
+  `Id_UGIT_Act` VARCHAR(45) NULL DEFAULT NULL,
+  `Id_Factu_Act` INT(11) NULL DEFAULT NULL,
+  `Id_Uni_Act` INT(11) NULL DEFAULT NULL,
+  `Fecha_Recepcion_Act` DATE NULL DEFAULT NULL,
+  `Nombre_Act` VARCHAR(200) NULL DEFAULT NULL,
+  `Descripcion_Act` BLOB NULL DEFAULT NULL,
+  `Foto_Act` VARCHAR(60) NULL DEFAULT NULL,
+  `Costo_Act` VARCHAR(20) NULL DEFAULT NULL,
+  `Desecho_Act` TINYINT(1) NULL DEFAULT NULL,
+  `Descripcion_Dese_Act` BLOB NULL DEFAULT NULL,
+  `Donacion_Act` TINYINT(1) NULL DEFAULT NULL,
+  `Descripcion_Dona_Act` BLOB NULL DEFAULT NULL,
+  `Verificado_Act` TINYINT(1) NULL DEFAULT NULL,
+  `Id_Per_Usu_Act` INT(10) UNSIGNED NULL DEFAULT NULL,
+  `Numero_Serie_Act` VARCHAR(150) NULL DEFAULT NULL,
+  `Marca_Act` VARCHAR(150) NULL DEFAULT NULL,
+  `Modelo_Act` VARCHAR(150) NULL DEFAULT NULL,
+  `Color_Act` VARCHAR(150) NULL DEFAULT NULL,
+  `Activo_Act` CHAR(1) NULL DEFAULT NULL,
+  `Mantenimiento_Act` CHAR(1) NULL DEFAULT NULL,
+  `Descripcion_Mante_Act` BLOB NULL DEFAULT NULL,
+  `Tiempo_Garantia_Act` INT(11) NULL DEFAULT NULL,
+  PRIMARY KEY (`Id_Act`),
+  INDEX `fk_tab_Activos_tab_zonas1_idx` (`Id_Zonas_tmp_Act` ASC),
+  INDEX `fk_tab_Activos_tab_facturas1_idx` (`Id_Factu_Act` ASC),
+  INDEX `fk_tab_Activos_tab_universidades1_idx` (`Id_Uni_Act` ASC),
+  INDEX `fk_tab_Activos_tab_usuarios1_idx` (`Id_Per_Usu_Act` ASC),
+  CONSTRAINT `fk_tab_Activos_tab_facturas1`
+    FOREIGN KEY (`Id_Factu_Act`)
+    REFERENCES `bd_sae_siua_2017_v1`.`tab_facturas` (`Id_Factu`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_tab_Activos_tab_universidades1`
+    FOREIGN KEY (`Id_Uni_Act`)
+    REFERENCES `bd_sae_siua_2017_v1`.`tab_universidades` (`Id_Uni`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_tab_Activos_tab_usuarios1`
+    FOREIGN KEY (`Id_Per_Usu_Act`)
+    REFERENCES `bd_sae_siua_2017_v1`.`tab_usuarios` (`Id_Per_Usu`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_tab_Activos_tab_zonas1`
+    FOREIGN KEY (`Id_Zonas_tmp_Act`)
+    REFERENCES `bd_sae_siua_2017_v1`.`tab_zonas_tmp` (`Id_Zonas_tmp`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+AUTO_INCREMENT = 2706
+DEFAULT CHARACTER SET = latin1;
+
+
+-- -----------------------------------------------------
+-- Table `bd_sae_siua_2017_v1`.`tab_bitacora`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `bd_sae_siua_2017_v1`.`tab_bitacora` (
+  `Id_Bita` BIGINT(19) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'Id de la bitacora',
+  `Id_Per_Usu_Bita` INT(10) UNSIGNED NOT NULL,
+  `Fecha_Bita` VARCHAR(30) NULL DEFAULT NULL COMMENT 'Fecha en la que se hizo la transacciÃ³n',
+  `SQL_Bita` BLOB NULL DEFAULT NULL COMMENT 'SQL que se ejecuto',
+  PRIMARY KEY (`Id_Bita`),
+  INDEX `fk_tab_bitacora_tab_usuarios1_idx` (`Id_Per_Usu_Bita` ASC),
+  CONSTRAINT `fk_tab_bitacora_tab_usuarios1`
+    FOREIGN KEY (`Id_Per_Usu_Bita`)
+    REFERENCES `bd_sae_siua_2017_v1`.`tab_usuarios` (`Id_Per_Usu`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+AUTO_INCREMENT = 87
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `bd_sae_siua_2017_v1`.`tab_escuelas`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `bd_sae_siua_2017_v1`.`tab_escuelas` (
+  `Id_Esc` INT(11) NOT NULL AUTO_INCREMENT,
+  `Id_Uni_Esc` INT(11) NOT NULL,
+  `Nombre_Esc` VARCHAR(200) NULL DEFAULT NULL,
+  `Diminutivo_Esc` VARCHAR(45) NULL DEFAULT NULL,
+  `Codigo_Esc` VARCHAR(45) NULL DEFAULT NULL,
+  `Logo_Esc` VARCHAR(45) NULL DEFAULT NULL,
+  `Telefono_Esc` VARCHAR(9) NULL DEFAULT NULL,
+  `Fax_Esc` VARCHAR(9) NULL DEFAULT NULL,
+  `Activo_Esc` CHAR(1) NULL DEFAULT NULL,
+  PRIMARY KEY (`Id_Esc`),
+  INDEX `fk_tab_escuelas_tab_universidades1_idx` (`Id_Uni_Esc` ASC),
+  CONSTRAINT `fk_tab_escuelas_tab_universidades1`
+    FOREIGN KEY (`Id_Uni_Esc`)
+    REFERENCES `bd_sae_siua_2017_v1`.`tab_universidades` (`Id_Uni`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+AUTO_INCREMENT = 7
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `bd_sae_siua_2017_v1`.`tab_carreras`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `bd_sae_siua_2017_v1`.`tab_carreras` (
+  `Id_Car` INT(11) NOT NULL AUTO_INCREMENT COMMENT 'Id de la carrera',
+  `Id_Esc_Car` INT(11) NOT NULL,
+  `Nombre_Car` VARCHAR(300) NULL DEFAULT NULL COMMENT 'Nombre de la carrera',
+  `Codigo_Car` VARCHAR(45) NULL DEFAULT NULL COMMENT 'Codigo de la carrera',
+  `Diminutivo_Car` VARCHAR(45) NULL DEFAULT NULL COMMENT 'Diminutivo de la carrera',
+  `Telefono_Car` VARCHAR(9) NULL DEFAULT NULL COMMENT 'Telefono de la carrera',
+  `Fax_Car` VARCHAR(9) NULL DEFAULT NULL COMMENT 'Fax de la carrera',
+  `Correo_Car` VARCHAR(100) NULL DEFAULT NULL,
+  `Activo_Car` CHAR(1) NULL DEFAULT NULL COMMENT '1=activo\n0=inactivo',
+  PRIMARY KEY (`Id_Car`),
+  INDEX `fk_tab_carreras_tab_escuelas1_idx` (`Id_Esc_Car` ASC),
+  CONSTRAINT `fk_tab_carreras_tab_escuelas1`
+    FOREIGN KEY (`Id_Esc_Car`)
+    REFERENCES `bd_sae_siua_2017_v1`.`tab_escuelas` (`Id_Esc`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+AUTO_INCREMENT = 9
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `bd_sae_siua_2017_v1`.`tab_plantillas_correos`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `bd_sae_siua_2017_v1`.`tab_plantillas_correos` (
+  `Id_PlanCor` INT(11) NOT NULL AUTO_INCREMENT COMMENT 'Id de la plantilla',
+  `Nombre_PlanCor` VARCHAR(80) NULL DEFAULT NULL COMMENT 'Nombre de la plantilla',
+  `Direccion_PlanCor` VARCHAR(300) NULL DEFAULT NULL,
+  `Tipo_PlanCor` CHAR(1) NULL DEFAULT NULL COMMENT '1=Inscripcion',
+  `Imagen_PlanCor` VARCHAR(45) NULL DEFAULT NULL,
+  PRIMARY KEY (`Id_PlanCor`))
+ENGINE = InnoDB
+AUTO_INCREMENT = 3
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `bd_sae_siua_2017_v1`.`tab_plantillas_inscripcion`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `bd_sae_siua_2017_v1`.`tab_plantillas_inscripcion` (
+  `Id_PI` INT(11) NOT NULL AUTO_INCREMENT,
+  `Nombre_PI` VARCHAR(80) NULL DEFAULT NULL,
+  `Direccion_PI` VARCHAR(300) NULL DEFAULT NULL,
+  `Imagen_PI` VARCHAR(45) NULL DEFAULT NULL,
+  PRIMARY KEY (`Id_PI`))
+ENGINE = InnoDB
+AUTO_INCREMENT = 3
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `bd_sae_siua_2017_v1`.`tab_configuracion`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `bd_sae_siua_2017_v1`.`tab_configuracion` (
+  `Id_Conf` TINYINT(3) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'Id de la configuraciÃ³n',
+  `Id_Pai_Conf` SMALLINT(5) UNSIGNED NOT NULL,
+  `Nombre_Conf` VARCHAR(200) NULL DEFAULT NULL COMMENT 'Nombre del Sistema',
+  `Titulo_Bienvenida_Conf` VARCHAR(200) NULL DEFAULT NULL COMMENT 'Titulo de Bienvenida del sistema',
+  `Nombre_Resumen_Conf` VARCHAR(20) NULL DEFAULT NULL COMMENT 'Nombre resumen para el menu',
+  `Quienes_Somos_Conf` BLOB NULL DEFAULT NULL COMMENT 'DescripciÃ³n de la empresa',
+  `Direccion_Conf` VARCHAR(200) NULL DEFAULT NULL COMMENT 'DirecciÃ³n de la empresa			',
+  `Telefono_Conf` VARCHAR(16) NULL DEFAULT NULL COMMENT 'Telefono de la empresa',
+  `Email_Conf` VARCHAR(60) NULL DEFAULT NULL COMMENT 'Correo de la empresa',
+  `Fax_Conf` VARCHAR(16) NULL DEFAULT NULL COMMENT 'Fax de la empresa',
+  `Permitir_Inscripcion_Estu_Conf` TINYINT(1) NULL DEFAULT NULL COMMENT 'Habilitar la inscripciÃ³n de estudiantes',
+  `Titulo_Inscripcion_Estu_Conf` VARCHAR(250) NULL DEFAULT NULL,
+  `Id_Rol_Estu_Conf` SMALLINT(5) UNSIGNED NULL DEFAULT NULL,
+  `Id_PI_Estu_Conf` INT(11) NULL DEFAULT NULL,
+  `Permitir_Inscripcion_Empr_Conf` TINYINT(1) NULL DEFAULT NULL COMMENT 'Permitir la inscripciÃ³n de Empresa',
+  `Titulo_Inscripcion_Emp_Conf` VARCHAR(160) NULL DEFAULT NULL,
+  `Id_Rol_Emp_Conf` SMALLINT(5) UNSIGNED NULL DEFAULT NULL,
+  `Id_PI_Emp_Conf` INT(11) NOT NULL,
+  `Permitir_Contacto_Rol_Conf` TINYINT(1) NULL DEFAULT NULL COMMENT 'Permitir contactar los usuriarios del sistema que tengan X Perfil',
+  `Permitir_Desbloquear_Usuari_Conf` TINYINT(1) NULL DEFAULT NULL,
+  `Permitir_Recordar_Contrasena_Conf` TINYINT(1) NULL DEFAULT NULL COMMENT 'Le permite al usuario recordar contraseÃ±a\n1=si\n0=no',
+  `Enviar_Correo_Inscripcion_Conf` TINYINT(1) NULL DEFAULT NULL COMMENT '1=Envia Correo\n2=No Envia el Correo',
+  `Id_PlanCor_Inscripcion_Conf` INT(11) NOT NULL,
+  `Nombre_Session_Conf` VARCHAR(60) NULL DEFAULT NULL COMMENT 'Nombre de session personalizado',
+  `Tiempo_Session_Conf` VARCHAR(45) NULL DEFAULT NULL COMMENT 'Cuanto tiempo de inactividad tiene el usuario antes de sacarlo',
+  `Direccion_Carpeta_Conf` VARCHAR(200) NULL DEFAULT NULL COMMENT 'DirecciÃ³n de la carpeta de los archivos del sistema dentro de WWW',
+  `Direccion_Web_Conf` VARCHAR(200) NULL DEFAULT NULL COMMENT 'DirecciÃ³n web del sistema para seguridad',
+  `LDAP_Conf` TINYINT(1) NULL DEFAULT NULL COMMENT 'Hacer conexion por servidor LDAP',
+  `IP_LDAP_Conf` VARCHAR(20) NULL DEFAULT NULL COMMENT 'IP del servidor LDAP',
+  `Cadena_LDAP_Conf` VARCHAR(200) NULL DEFAULT NULL COMMENT 'Cadena de conexiÃ³n LDAP',
+  `Logo_Empresa_Conf` VARCHAR(200) NULL DEFAULT NULL COMMENT 'DirecciÃ³n del logo de la empresa',
+  `Mostrar_Logo_Conf` TINYINT(1) NULL DEFAULT NULL COMMENT '1=Lo muestra\n0=No lo muestra',
+  `Width_Logo_Conf` SMALLINT(5) UNSIGNED NULL DEFAULT NULL COMMENT 'Ancho del logo',
+  `Height_Logo_Conf` SMALLINT(5) UNSIGNED NULL DEFAULT NULL COMMENT 'Alto del logo',
+  `Cantidad_Registros_Conf` TINYINT(3) UNSIGNED NULL DEFAULT NULL COMMENT 'Cantidad de registros que se presentaran por paginaciÃ³n',
+  `Llave_Encriptacion_Conf` VARCHAR(60) NULL DEFAULT NULL COMMENT 'Palabra clave utilziada para encriptar la informacion',
+  `Nivel_Ubicacion_Conf` CHAR(1) NULL DEFAULT NULL COMMENT 'Permite establecer la opcion de desbloquear un usuario',
+  `Nombre_Empresa_Conf` VARCHAR(150) NULL DEFAULT NULL COMMENT 'Nombre de la Empresa',
+  `Pedir_Fecha_Nacimiento` CHAR(1) NULL DEFAULT NULL,
+  `Pedir_Grados_Academicos` CHAR(1) NULL DEFAULT NULL,
+  `Direccion_Facebook_Conf` VARCHAR(300) NULL DEFAULT NULL COMMENT 'Direccion de Facebook',
+  `Usuario_Facebook_Conf` VARCHAR(60) NULL DEFAULT NULL COMMENT 'Usuario de Facebook',
+  `Password_Facebook_Conf` VARCHAR(60) NULL DEFAULT NULL COMMENT 'Contraseña de Facebook',
+  `Direccion_Twitter_Conf` VARCHAR(300) NULL DEFAULT NULL COMMENT 'Direccion de Twitter',
+  `Usuario_Twitter_Conf` VARCHAR(60) NULL DEFAULT NULL COMMENT 'Usuario de Twitter',
+  `Password_Twitter_Conf` VARCHAR(60) NULL DEFAULT NULL COMMENT 'Contraseña de Twitter',
+  `Direccion_GooglePlus_Conf` VARCHAR(300) NULL DEFAULT NULL COMMENT 'Direccion de Google Plus',
+  `Usuario_GooglePlus_Conf` VARCHAR(60) NULL DEFAULT NULL COMMENT 'Usuario google plus',
+  `Password_GooglePlus_Conf` VARCHAR(60) NULL DEFAULT NULL COMMENT 'Contraseña Google Plus',
+  PRIMARY KEY (`Id_Conf`),
+  INDEX `fk_tab_configuracion_tab_paises1_idx` (`Id_Pai_Conf` ASC),
+  INDEX `fk_tab_configuracion_tab_roles1_idx` (`Id_Rol_Estu_Conf` ASC),
+  INDEX `fk_tab_configuracion_tab_roles2_idx` (`Id_Rol_Emp_Conf` ASC),
+  INDEX `fk_tab_configuracion_tab_plantillas_inscripcion1_idx` (`Id_PI_Estu_Conf` ASC),
+  INDEX `fk_tab_configuracion_tab_plantillas_inscripcion2_idx` (`Id_PI_Emp_Conf` ASC),
+  INDEX `fk_tab_configuracion_tab_plantillas_correos1_idx` (`Id_PlanCor_Inscripcion_Conf` ASC),
+  CONSTRAINT `fk_tab_configuracion_tab_paises1`
+    FOREIGN KEY (`Id_Pai_Conf`)
+    REFERENCES `bd_sae_siua_2017_v1`.`tab_paises` (`Id_Pai`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_tab_configuracion_tab_plantillas_correos1`
+    FOREIGN KEY (`Id_PlanCor_Inscripcion_Conf`)
+    REFERENCES `bd_sae_siua_2017_v1`.`tab_plantillas_correos` (`Id_PlanCor`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_tab_configuracion_tab_plantillas_inscripcion1`
+    FOREIGN KEY (`Id_PI_Estu_Conf`)
+    REFERENCES `bd_sae_siua_2017_v1`.`tab_plantillas_inscripcion` (`Id_PI`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_tab_configuracion_tab_plantillas_inscripcion2`
+    FOREIGN KEY (`Id_PI_Emp_Conf`)
+    REFERENCES `bd_sae_siua_2017_v1`.`tab_plantillas_inscripcion` (`Id_PI`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_tab_configuracion_tab_roles1`
+    FOREIGN KEY (`Id_Rol_Estu_Conf`)
+    REFERENCES `bd_sae_siua_2017_v1`.`tab_roles` (`Id_Rol`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_tab_configuracion_tab_roles2`
+    FOREIGN KEY (`Id_Rol_Emp_Conf`)
+    REFERENCES `bd_sae_siua_2017_v1`.`tab_roles` (`Id_Rol`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+AUTO_INCREMENT = 2
+DEFAULT CHARACTER SET = utf8
+COMMENT = 'tabla de configuración del sistema';
+
+
+-- -----------------------------------------------------
+-- Table `bd_sae_siua_2017_v1`.`tab_control_modulos`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `bd_sae_siua_2017_v1`.`tab_control_modulos` (
+  `Id_Cont_Mod` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'Id del modulo',
+  `Descripcion_Cont_Mod` BLOB NULL DEFAULT NULL,
+  `Nombre_Cont_Mod` VARCHAR(200) NULL DEFAULT NULL COMMENT 'Nombre del Modulo	',
+  `Permiso_Inicial_Cont_Mod` INT(11) NULL DEFAULT NULL COMMENT 'Numero inicial de permisos',
+  `Permiso_Final_Cont_Mod` INT(11) NULL DEFAULT NULL COMMENT 'Numero de permisos final',
+  `Activo_Cont_Mod` CHAR(1) NULL DEFAULT NULL COMMENT '1=Modulo Activo\n0=Modulo Inactivo',
+  PRIMARY KEY (`Id_Cont_Mod`))
+ENGINE = InnoDB
+AUTO_INCREMENT = 8
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `bd_sae_siua_2017_v1`.`tab_correos`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `bd_sae_siua_2017_v1`.`tab_correos` (
+  `Id_Cor` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'Id del correo electronico',
+  `Id_Per_Cor` INT(10) UNSIGNED NOT NULL,
+  `Correo_Cor` VARCHAR(100) NULL DEFAULT NULL COMMENT 'Correo electronico',
+  `Notificacion_Cor` CHAR(1) NULL DEFAULT NULL COMMENT '1=El sistema lo utiliza para enviarle informacion\n0=No se utiliza solo consulta',
+  `Publico_Cor` CHAR(1) NULL DEFAULT NULL COMMENT '1=El correo puede ser de caracter publico\n0=No lo es\n',
+  PRIMARY KEY (`Id_Cor`),
+  INDEX `fk_tab_Correos_tab_personas1_idx` (`Id_Per_Cor` ASC),
+  CONSTRAINT `fk_tab_Correos_tab_personas1`
+    FOREIGN KEY (`Id_Per_Cor`)
+    REFERENCES `bd_sae_siua_2017_v1`.`tab_personas` (`Id_Per`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+AUTO_INCREMENT = 159
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `bd_sae_siua_2017_v1`.`tab_derechos`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `bd_sae_siua_2017_v1`.`tab_derechos` (
+  `Id_Der` INT(10) UNSIGNED NOT NULL,
+  `Id_Cont_Mod_Der` INT(10) UNSIGNED NOT NULL,
+  `Nombre_Der` VARCHAR(200) NULL DEFAULT NULL COMMENT 'Nombre clave del derecho',
+  `Descripcion_Der` VARCHAR(300) NULL DEFAULT NULL COMMENT 'DescripciÃ³n amplia del derecho',
+  `Pagina_Der` VARCHAR(100) NULL DEFAULT NULL COMMENT 'Pagina donde se aplica el derecho',
+  `Modulo_Der` VARCHAR(50) NULL DEFAULT NULL COMMENT 'Nombre del modulo donde se aplica el derecho',
+  `Submodulo_Der` VARCHAR(50) NULL DEFAULT NULL COMMENT 'Nombre del submodulo del derecho\n',
+  PRIMARY KEY (`Id_Der`),
+  INDEX `fk_tab_derechos_tab_control_modulos1_idx` (`Id_Cont_Mod_Der` ASC),
+  CONSTRAINT `fk_tab_derechos_tab_control_modulos1`
+    FOREIGN KEY (`Id_Cont_Mod_Der`)
+    REFERENCES `bd_sae_siua_2017_v1`.`tab_control_modulos` (`Id_Cont_Mod`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `bd_sae_siua_2017_v1`.`tab_mensajes_usuarios`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `bd_sae_siua_2017_v1`.`tab_mensajes_usuarios` (
+  `Id_Men` BIGINT(19) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'Id del mensaje',
+  `Id_Per_Usu_Men` INT(10) UNSIGNED NOT NULL,
+  `Mensaje_Men` VARCHAR(300) NULL DEFAULT NULL,
+  `Diseno_Men` VARCHAR(15) NULL DEFAULT NULL COMMENT 'Tipo de ventana\n/growl|attached|bar|other',
+  `Efecto_Men` VARCHAR(15) NULL DEFAULT NULL COMMENT '// effects for the specified layout:\n// for growl layout: scale|slide|genie|jelly\n// for attached layout: flip|bouncyflip\n// for other layout: boxspinner|cornerexpand|loadingcircle|thumbslider\n',
+  `Tipo_Men` VARCHAR(15) NULL DEFAULT NULL,
+  `Tiempo_Men` VARCHAR(10) NULL DEFAULT NULL COMMENT 'en segundos',
+  `onClose_Men` BLOB NULL DEFAULT NULL COMMENT 'Accion a hacer al cerrar la notificacion\ndefault return false;',
+  `onOpen_Men` BLOB NULL DEFAULT NULL COMMENT 'accion a hacer al abrir la ventana\ndefault return false;',
+  `Estado_Men` TINYINT(1) NULL DEFAULT NULL COMMENT '0=No leido\n1=Leido',
+  PRIMARY KEY (`Id_Men`),
+  INDEX `fk_tab_mensajes_usuarios_tab_usuarios1_idx` (`Id_Per_Usu_Men` ASC),
+  CONSTRAINT `fk_tab_mensajes_usuarios_tab_usuarios1`
+    FOREIGN KEY (`Id_Per_Usu_Men`)
+    REFERENCES `bd_sae_siua_2017_v1`.`tab_usuarios` (`Id_Per_Usu`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `bd_sae_siua_2017_v1`.`tab_menu`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `bd_sae_siua_2017_v1`.`tab_menu` (
+  `Id_Menu` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `Nivel_Menu` TINYINT(4) NULL DEFAULT NULL,
+  `Nombre_Menu` VARCHAR(60) NULL DEFAULT NULL,
+  `Padre_Menu` VARCHAR(45) NULL DEFAULT NULL,
+  `Tipo_Menu` CHAR(1) NULL DEFAULT NULL COMMENT '1=tiene mas hijo\n0=no tiene mas hijos\n',
+  `Permiso_Menu` INT(11) NULL DEFAULT NULL COMMENT 'ID del permiso que aplica a este acceso',
+  `Accion_Menu` VARCHAR(200) NULL DEFAULT NULL COMMENT 'Accion del menu solo con comillas simples',
+  PRIMARY KEY (`Id_Menu`))
+ENGINE = InnoDB
+AUTO_INCREMENT = 55
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `bd_sae_siua_2017_v1`.`tab_permisos`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `bd_sae_siua_2017_v1`.`tab_permisos` (
+  `Id_Perm` BIGINT(19) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'Id del permiso para hacerlo unico',
+  `Id_Der_Perm` INT(10) UNSIGNED NOT NULL COMMENT 'Id del derecho',
+  `Id_Rol_Perm` SMALLINT(5) UNSIGNED NOT NULL COMMENT 'Id del Rol',
+  PRIMARY KEY (`Id_Perm`),
+  INDEX `fk_tab_derechos_has_tab_perfiles_tab_perfiles1_idx` (`Id_Rol_Perm` ASC),
+  INDEX `fk_tab_derechos_has_tab_perfiles_tab_derechos1_idx` (`Id_Der_Perm` ASC),
+  CONSTRAINT `fk_tab_derechos_has_tab_perfiles_tab_derechos1`
+    FOREIGN KEY (`Id_Der_Perm`)
+    REFERENCES `bd_sae_siua_2017_v1`.`tab_derechos` (`Id_Der`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_tab_derechos_has_tab_perfiles_tab_perfiles1`
+    FOREIGN KEY (`Id_Rol_Perm`)
+    REFERENCES `bd_sae_siua_2017_v1`.`tab_roles` (`Id_Rol`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+AUTO_INCREMENT = 682
+DEFAULT CHARACTER SET = utf8
+COMMENT = 'Tabla que relaciona los derechos o acciones sobre le sistema con un perfil o rol';
+
+
+-- -----------------------------------------------------
+-- Table `bd_sae_siua_2017_v1`.`tab_personas_x_carreras`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `bd_sae_siua_2017_v1`.`tab_personas_x_carreras` (
+  `Id_Per_PXC` INT(10) UNSIGNED NOT NULL,
+  `Id_Car_PXC` INT(11) NOT NULL,
+  PRIMARY KEY (`Id_Per_PXC`, `Id_Car_PXC`),
+  INDEX `fk_tab_personas_has_tab_carreras_tab_carreras1_idx` (`Id_Car_PXC` ASC),
+  INDEX `fk_tab_personas_has_tab_carreras_tab_personas1_idx` (`Id_Per_PXC` ASC),
+  CONSTRAINT `fk_tab_personas_has_tab_carreras_tab_carreras1`
+    FOREIGN KEY (`Id_Car_PXC`)
+    REFERENCES `bd_sae_siua_2017_v1`.`tab_carreras` (`Id_Car`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_tab_personas_has_tab_carreras_tab_personas1`
+    FOREIGN KEY (`Id_Per_PXC`)
+    REFERENCES `bd_sae_siua_2017_v1`.`tab_personas` (`Id_Per`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `bd_sae_siua_2017_v1`.`tab_personas_x_ct`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `bd_sae_siua_2017_v1`.`tab_personas_x_ct` (
+  `Id_Per_PXCT` INT(10) UNSIGNED NOT NULL,
+  `Id_CT_PXCT` INT(11) NOT NULL,
+  PRIMARY KEY (`Id_CT_PXCT`, `Id_Per_PXCT`),
+  INDEX `fk_tab_personas_x_ct_tab_centros_trabajos1_idx` (`Id_CT_PXCT` ASC),
+  INDEX `fk_tab_personas_x_ct_tab_personas1_idx` (`Id_Per_PXCT` ASC),
+  CONSTRAINT `fk_tab_personas_x_ct_tab_centros_trabajos1`
+    FOREIGN KEY (`Id_CT_PXCT`)
+    REFERENCES `bd_sae_siua_2017_v1`.`tab_centros_trabajos` (`Id_CT`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_tab_personas_x_ct_tab_personas1`
+    FOREIGN KEY (`Id_Per_PXCT`)
+    REFERENCES `bd_sae_siua_2017_v1`.`tab_personas` (`Id_Per`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `bd_sae_siua_2017_v1`.`tab_personas_x_escuelas`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `bd_sae_siua_2017_v1`.`tab_personas_x_escuelas` (
+  `Id_Per_PXE` INT(10) UNSIGNED NOT NULL,
+  `Id_Esc_PXE` INT(11) NOT NULL,
+  PRIMARY KEY (`Id_Per_PXE`, `Id_Esc_PXE`),
+  INDEX `fk_tab_personas_has_tab_escuelas_tab_personas1_idx` (`Id_Per_PXE` ASC),
+  INDEX `fk_tab_personas_x_escuelas_tab_escuelas1_idx` (`Id_Esc_PXE` ASC),
+  CONSTRAINT `fk_tab_personas_has_tab_escuelas_tab_personas1`
+    FOREIGN KEY (`Id_Per_PXE`)
+    REFERENCES `bd_sae_siua_2017_v1`.`tab_personas` (`Id_Per`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_tab_personas_x_escuelas_tab_escuelas1`
+    FOREIGN KEY (`Id_Esc_PXE`)
+    REFERENCES `bd_sae_siua_2017_v1`.`tab_escuelas` (`Id_Esc`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `bd_sae_siua_2017_v1`.`tab_personas_x_universidades`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `bd_sae_siua_2017_v1`.`tab_personas_x_universidades` (
+  `Id_Per_PXU` INT(10) UNSIGNED NOT NULL,
+  `Id_Uni_PXU` INT(11) NOT NULL,
+  PRIMARY KEY (`Id_Per_PXU`, `Id_Uni_PXU`),
+  INDEX `fk_tab_personas_has_tab_universidades_tab_universidades1_idx` (`Id_Uni_PXU` ASC),
+  INDEX `fk_tab_personas_has_tab_universidades_tab_personas1_idx` (`Id_Per_PXU` ASC),
+  CONSTRAINT `fk_tab_personas_has_tab_universidades_tab_personas1`
+    FOREIGN KEY (`Id_Per_PXU`)
+    REFERENCES `bd_sae_siua_2017_v1`.`tab_personas` (`Id_Per`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_tab_personas_has_tab_universidades_tab_universidades1`
+    FOREIGN KEY (`Id_Uni_PXU`)
+    REFERENCES `bd_sae_siua_2017_v1`.`tab_universidades` (`Id_Uni`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `bd_sae_siua_2017_v1`.`tab_tipos_telefonos`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `bd_sae_siua_2017_v1`.`tab_tipos_telefonos` (
+  `Id_Tip_Tel` TINYINT(3) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'Id del tipo de telefono',
+  `Nombre_Tip_Tel` VARCHAR(50) NULL DEFAULT NULL COMMENT 'Nombre del tipo de telefono',
+  `Activo_Tip_Tel` CHAR(1) NULL DEFAULT NULL COMMENT '1=Activo\n0=Inactivo',
+  PRIMARY KEY (`Id_Tip_Tel`))
+ENGINE = InnoDB
+AUTO_INCREMENT = 6
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `bd_sae_siua_2017_v1`.`tab_telefonos`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `bd_sae_siua_2017_v1`.`tab_telefonos` (
+  `Id_Tel` BIGINT(19) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'Id del Telefono',
+  `Id_Tip_Tel_Tel` TINYINT(3) UNSIGNED NOT NULL COMMENT 'Id del tipo de telefono',
+  `Id_Per_Tel` INT(10) UNSIGNED NOT NULL,
+  `Telefono_Tel` VARCHAR(16) NULL DEFAULT NULL COMMENT 'Telefono',
+  `Notificacion_Tel` CHAR(1) NULL DEFAULT NULL COMMENT '1=lo utiliza el sistema para notificaciones\n0=no lo utiliza',
+  `Publico_Tel` CHAR(1) NULL DEFAULT NULL COMMENT '1=el telefono es publico\n0=no',
+  PRIMARY KEY (`Id_Tel`),
+  INDEX `fk_tab_telefonos_tab_tipos_telefonos1_idx` (`Id_Tip_Tel_Tel` ASC),
+  INDEX `fk_tab_telefonos_tab_personas1_idx` (`Id_Per_Tel` ASC),
+  CONSTRAINT `fk_tab_telefonos_tab_personas1`
+    FOREIGN KEY (`Id_Per_Tel`)
+    REFERENCES `bd_sae_siua_2017_v1`.`tab_personas` (`Id_Per`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_tab_telefonos_tab_tipos_telefonos1`
+    FOREIGN KEY (`Id_Tip_Tel_Tel`)
+    REFERENCES `bd_sae_siua_2017_v1`.`tab_tipos_telefonos` (`Id_Tip_Tel`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+AUTO_INCREMENT = 82
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `bd_sae_siua_2017_v1`.`tab_preslla_llaves`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `bd_sae_siua_2017_v1`.`tab_preslla_llaves` (
+  `Id_LLA` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `Nombre_LLA` VARCHAR(100) NULL,
+  `Descripcion_LLA` VARCHAR(300) NULL,
+  `Espacio_LLA` INT NULL,
+  `Foto_LLA` VARCHAR(100) NULL,
+  `Activo_LLA` CHAR(1) NULL,
+  PRIMARY KEY (`Id_LLA`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `bd_sae_siua_2017_v1`.`tab_preslla_solicitantes`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `bd_sae_siua_2017_v1`.`tab_preslla_solicitantes` (
+  `Id_SOL` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `Tipo_Identificacion_SOL` CHAR(1) NULL COMMENT '1=Cedula\n2=Pasaporte\n3=Residencia',
+  `Identificacion_SOL` VARCHAR(16) NULL,
+  `Nombre_SOL` VARCHAR(60) NULL,
+  `Apellido1_SOL` VARCHAR(50) NULL,
+  `Apellido2_SOL` VARCHAR(50) NULL,
+  `Telefono_SOL` VARCHAR(16) NULL,
+  `Correo_SOL` VARCHAR(100) NULL,
+  `Activo_SOL` CHAR(1) NULL,
+  PRIMARY KEY (`Id_SOL`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `bd_sae_siua_2017_v1`.`tab_preslla_prestamos`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `bd_sae_siua_2017_v1`.`tab_preslla_prestamos` (
+  `Id_PRES` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `Id_LLA_PRESS` INT UNSIGNED NOT NULL,
+  `Id_SOL_PRESS` INT UNSIGNED NOT NULL,
+  `Id_Per_Usu_Entrega_PRES` INT(10) UNSIGNED NOT NULL,
+  `Id_Per_Usu_Recibe_PRES` INT(10) UNSIGNED NULL,
+  `Fecha_Hora_Entrega_PRES` DATETIME NULL,
+  `Fecha_Hora_Recepcion_PRES` DATETIME NULL,
+  PRIMARY KEY (`Id_PRES`),
+  INDEX `fk_tab_preslla_prestamos_tab_usuarios1_idx` (`Id_Per_Usu_Entrega_PRES` ASC),
+  INDEX `fk_tab_preslla_prestamos_tab_usuarios2_idx` (`Id_Per_Usu_Recibe_PRES` ASC),
+  INDEX `fk_tab_preslla_prestamos_tab_preslla_llaves1_idx` (`Id_LLA_PRESS` ASC),
+  INDEX `fk_tab_preslla_prestamos_tab_preslla_solicitantes1_idx` (`Id_SOL_PRESS` ASC),
+  CONSTRAINT `fk_tab_preslla_prestamos_tab_usuarios1`
+    FOREIGN KEY (`Id_Per_Usu_Entrega_PRES`)
+    REFERENCES `bd_sae_siua_2017_v1`.`tab_usuarios` (`Id_Per_Usu`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_tab_preslla_prestamos_tab_usuarios2`
+    FOREIGN KEY (`Id_Per_Usu_Recibe_PRES`)
+    REFERENCES `bd_sae_siua_2017_v1`.`tab_usuarios` (`Id_Per_Usu`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_tab_preslla_prestamos_tab_preslla_llaves1`
+    FOREIGN KEY (`Id_LLA_PRESS`)
+    REFERENCES `bd_sae_siua_2017_v1`.`tab_preslla_llaves` (`Id_LLA`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_tab_preslla_prestamos_tab_preslla_solicitantes1`
+    FOREIGN KEY (`Id_SOL_PRESS`)
+    REFERENCES `bd_sae_siua_2017_v1`.`tab_preslla_solicitantes` (`Id_SOL`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `bd_sae_siua_2017_v1`.`tab_inventario_impresoras`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `bd_sae_siua_2017_v1`.`tab_inventario_impresoras` (
+  `Id_InvImp` INT(10) UNSIGNED NOT NULL,
+  `Nombre_InvImp` VARCHAR(60) NULL,
+  `IP_InvImp` VARCHAR(15) NULL,
+  `Ubicación_InvImp` VARCHAR(100) NULL,
+  `Activo_InvImp` CHAR(1) NULL,
+  PRIMARY KEY (`Id_InvImp`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `bd_sae_siua_2017_v1`.`tab_inventario_configuracion`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `bd_sae_siua_2017_v1`.`tab_inventario_configuracion` (
+  `Id_InvConf` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `dominio_InvConf` VARCHAR(45) NULL,
+  PRIMARY KEY (`Id_InvConf`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `bd_sae_siua_2017_v1`.`tab_sae_tipos_identificaciones`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `bd_sae_siua_2017_v1`.`tab_sae_tipos_identificaciones` (
+  `Id_SAE_TI` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `Nombre_SAE_TI` VARCHAR(80) NULL,
+  `Placeholder_SAE_TI` VARCHAR(60) NULL,
+  `Cantidad_Caracteres_SAE_TI` INT(10) NULL,
+  `Formato_SAE_TI` VARCHAR(45) NULL,
+  `Activo_SAE_TI` CHAR(1) NULL,
+  PRIMARY KEY (`Id_SAE_TI`))
+ENGINE = InnoDB;
+
+
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+

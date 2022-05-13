@@ -1,0 +1,17 @@
+hay que hacer un virtual HOST que apunte a un subdominio
+
+Ejemplo: https://activos.siua.ac.cr
+
+
+<VirtualHost *:80>
+        DocumentRoot /var/www/html/Sistemas/SAE_INVENTARIO_TMP/inventario_publico/consulta_qr
+        <Directory /var/www/html/Sistemas/SAE_INVENTARIO_TMP/inventario_publico/consulta_qr>
+                Options FollowSymLinks Indexes
+        </Directory>
+        ServerName activos.siua.ac.cr
+        ServerAlias www.activos.siua.ac.cr
+        ErrorLog /var/log/apache2/activos.siua.ac.cr-error.log
+        CustomLog /var/log/apache2/activos.siua.ac.cr-access.log common
+</VirtualHost>
+
+

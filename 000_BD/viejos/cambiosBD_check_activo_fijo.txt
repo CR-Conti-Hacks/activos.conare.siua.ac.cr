@@ -1,0 +1,3 @@
+ALTER TABLE `bd_sae_siua_2017`.`tab_Activos` 
+ADD COLUMN `Activo_Fijo_ACT` CHAR(1) NULL COMMENT '1 = Es activo fijo / 0 = no es activo fijo\n' AFTER `Tiempo_Garantia_Act`;
+

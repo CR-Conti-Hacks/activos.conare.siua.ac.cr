@@ -1,0 +1,75 @@
+<!doctype html>
+
+<meta charset="utf-8">
+
+<title>Pickadate.js</title>
+
+<link rel="stylesheet" href="themes/default.css">
+<link rel="stylesheet" href="themes/default.date.css">
+
+
+<body>
+
+    <input id="Fecha_Nacimiento" name="Fecha_Nacimiento" type="text">
+    <input id="campo_Fecha_Nacimiento" name="campo_Fecha_Nacimiento" type="hidden">
+
+
+    <script src="jquery-2.1.3.js"></script>
+    <script src="picker.js"></script>
+    <script src="picker.date.js"></script>
+    <!--script src="translations/es_ES.js"></script-->
+
+    <script type="text/javascript">
+        $('#Fecha_Nacimiento').pickadate({
+            monthsFull: [ 'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre' ], //Nombre de los mese full
+            monthsShort: [ 'Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic' ], //Nombre corto de los meses
+            weekdaysFull: [ 'Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado' ], //Nombre largo dias
+            weekdaysShort: [ 'Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb' ], //nombre corto dias
+            today: 'Hoy', //hoy
+            clear: 'Borrar Fecha', //borrar campo
+            close: 'Cerrar', //cerrar calendario
+            firstDay: 1, //primer dia de la semana 1=lunes
+            showmonthsFull: true, //mostrar nombre largo meses
+            
+            formatSubmit: 'dd/mm/yyyy', //Formato de envio
+            hiddenPrefix: 'campo_', //prefijo del campo oculto formato anterio correcto
+            hiddenName: true, //Oculta el campo oculto y le quita el prefijo
+            selectYears: 80,
+            closeOnSelect: true,
+            closeOnClear: true
+            //min: new Date(2015,3,20), //Rangos de fechas
+            //max: new Date(2015,7,14)
+           /* disable: [ //Deshabilitar fechas
+                new Date(2015,3,13),
+                new Date(2015,3,29)
+              ]
+            */
+           /*
+           
+            onStart: function() {
+                console.log('Hello there :)')
+              },
+              onRender: function() {
+                console.log('Whoa.. rendered anew')
+              },
+              onOpen: function() {
+                console.log('Opened up')
+              },
+              onClose: function() {
+                console.log('Closed now')
+              },
+              onStop: function() {
+                console.log('See ya.')
+              },
+              onSet: function(context) {
+                console.log('Just set stuff:', context)
+              }
+           */
+        });
+    </script>
+
+
+</body>
+
+
+

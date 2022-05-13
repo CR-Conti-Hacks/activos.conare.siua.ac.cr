@@ -1,0 +1,150 @@
+/* Common, default styles for the notification box */
+
+.ns-box {
+	position: fixed;
+	background: rgba(42,45,50,0.85);
+	padding: 22px;
+	line-height: 1.4;
+	z-index: 10000;
+	pointer-events: none;
+	color: rgba(250,251,255,0.95);
+	font-size: 90%;
+	font-family: 'Helvetica Neue', 'Segoe UI', Helvetica, Arial, sans-serif;
+}
+
+.ns-box.ns-show {
+	pointer-events: auto;
+}
+
+.ns-box a {
+	color: inherit;
+	opacity: 0.7;
+	font-weight: 700;
+}
+
+.ns-box a:hover,
+.ns-box a:focus {
+	opacity: 1;
+}
+
+.ns-box p {
+	margin: 0;
+}
+
+.ns-box.ns-show,
+.ns-box.ns-visible {
+	pointer-events: auto;
+}
+
+.ns-close {
+	width: 20px;
+	height: 20px;
+	position: absolute;
+	right: 4px;
+	top: 4px;
+	overflow: hidden;
+	text-indent: 100%;
+	cursor: pointer;
+	-webkit-backface-visibility: hidden;
+	backface-visibility: hidden;
+}
+
+.ns-close:hover, 
+.ns-close:focus {
+	outline: none;
+}
+
+.ns-close::before,
+.ns-close::after {
+	content: '';
+	position: absolute;
+	width: 3px;
+	height: 60%;
+	top: 50%;
+	left: 50%;
+	background: #6e6e6e;
+}
+
+.ns-close:hover::before,
+.ns-close:hover::after {
+	background: #fff;
+}
+
+.ns-close::before {
+	-webkit-transform: translate(-50%,-50%) rotate(45deg);
+	transform: translate(-50%,-50%) rotate(45deg);
+}
+
+.ns-close::after {
+	-webkit-transform: translate(-50%,-50%) rotate(-45deg);
+	transform: translate(-50%,-50%) rotate(-45deg);
+}
+
+.ns-type-warning{
+	background: #EAE023 none repeat scroll 0 0 !important;
+	color: #1B1C18 !important;
+}
+
+.ns-type-error{
+	background: #BF100D none repeat scroll 0 0 !important;
+	color: #FFF !important;
+}
+
+.ns-type-success{
+	background: #57AA17 none repeat scroll 0 0 !important;
+	color: #FFF !important;
+}
+
+.ns-type-notice{
+	background: #1591D8 none repeat scroll 0 0 !important;
+	color: #FFF !important;
+}
+
+.icon:before {
+	font-family: 'linecons';
+	speak: none;
+	font-style: normal;
+	font-weight: normal;
+	font-variant: normal;
+	text-transform: none;
+	line-height: 1;
+	font-size: 2em;
+	display: inline-block;
+	/* Better Font Rendering =========== */
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+@font-face {
+	font-family: 'linecons';
+	src:url('linecons.eot?-kux0c3');
+	src:url('linecons.eot?#iefix-kux0c3') format('embedded-opentype'),
+		url('linecons.woff?-kux0c3') format('woff'),
+		url('linecons.ttf?-kux0c3') format('truetype'),
+		url('linecons.svg?-kux0c3#linecons') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+
+.icon-search:before {
+	content: "\e600";
+}
+.icon-settings:before {
+	content: "\e601";
+}
+.icon-bulb:before {
+	content: "\e602";
+}
+.icon-mail:before {
+	content: "\e603";
+}
+.icon-paperplane:before {
+	content: "\e604";
+}
+.icon-megaphone:before {
+	content: "\e605";
+}
+.icon-calendar:before {
+	content: "\e606";
+}
+

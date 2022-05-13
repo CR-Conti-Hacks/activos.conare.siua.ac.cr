@@ -1,0 +1,127 @@
+$bs_Id_Compromiso    	    = (isset($_GET['bs_Id_Compromiso']))      	? $_GET['bs_Id_Compromiso']         : '0';
+$bs_Id_Partida    	    = (isset($_GET['bs_Id_Partida']))      	? $_GET['bs_Id_Partida']            : '0';
+$bs_Id_Transferencia   	    = (isset($_GET['bs_Id_Transferencia']))     ? $_GET['bs_Id_Transferencia']      : '0';
+
+$bs_Id_Act         	    = (isset($_GET['bs_Id_Act']))               ? $_GET['bs_Id_Act']                : '';
+$bs_Id_Zona_tmp_Act    	    = (isset($_GET['bs_Id_Zona_tmp_Act']))      ? $_GET['bs_Id_Zona_tmp_Act']       : '0';
+$bs_Id_INS_Act     	    = (isset($_GET['bs_Id_INS_Act']))           ? $_GET['bs_Id_INS_Act']            : '';
+$bs_Id_UGIT_Act             = (isset($_GET['bs_Id_UGIT_Act']))          ? $_GET['bs_Id_UGIT_Act']           : '';
+$bs_Numero_OC               = (isset($_GET['bs_Numero_OC']))         	? $_GET['bs_Numero_OC']             : '0';
+$bs_Numero_Factu            = (isset($_GET['bs_Numero_Factu']))         ? $_GET['bs_Numero_Factu']          : '0';
+$bs_Numero_Prove            = (isset($_GET['bs_Numero_Prove']))         ? $_GET['bs_Numero_Prove']          : '0';
+$bs_Id_Uni_Act              = (isset($_GET['bs_Id_Uni_Act']))           ? $_GET['bs_Id_Uni_Act']            : '0';
+$bs_Fecha_Recepcion_Act	    = (isset($_GET['bs_Fecha_Recepcion_Act']))  ? $_GET['bs_Fecha_Recepcion_Act']   : '';
+$bs_Nombre_Act        	    = (isset($_GET['bs_Nombre_Act']))           ? $_GET['bs_Nombre_Act']            : '';
+$bs_Desecho_Act             = (isset($_GET['bs_Desecho_Act']))          ? $_GET['bs_Desecho_Act']           : '';
+$bs_Donacion_Act            = (isset($_GET['bs_Donacion_Act']))         ? $_GET['bs_Donacion_Act']          : '';
+$bs_Verificado_Act          = (isset($_GET['bs_Verificado_Act']))       ? $_GET['bs_Verificado_Act']        : '';
+$bs_Numero_Serie_Act        = (isset($_GET['bs_Numero_Serie_Act']))     ? $_GET['bs_Numero_Serie_Act']      : '';
+$bs_Marca_Act               = (isset($_GET['bs_Marca_Act']))            ? $_GET['bs_Marca_Act']             : '';
+$bs_Modelo_Act              = (isset($_GET['bs_Modelo_Act']))           ? $_GET['bs_Modelo_Act']            : '';
+$bs_Color_Act               = (isset($_GET['bs_Color_Act']))            ? $_GET['bs_Color_Act']             : '';
+/*ordenamientos*/
+$or_Id_Act	            = (isset($_GET['or_Id_Act']))               ? $_GET['or_Id_Act']                : '';
+$or_tipo_Id_Act 	    = (isset($_GET['or_tipo_Id_Act']))          ? $_GET['or_tipo_Id_Act']           : 'ASC';
+$or_Nombre_Act	            = (isset($_GET['or_Nombre_Act']))           ? $_GET['or_Nombre_Act']            : '';
+$or_tipo_Nombre_Act         = (isset($_GET['or_tipo_Nombre_Act']))      ? $_GET['or_tipo_Nombre_Act']       : 'ASC';
+$or_Marca_Act	            = (isset($_GET['or_Marca_Act']))            ? $_GET['or_Marca_Act']             : '';
+$or_tipo_or_Marca_Act       = (isset($_GET['or_tipo_or_Marca_Act']))    ? $_GET['or_tipo_or_Marca_Act']     : 'ASC';
+$or_Numero_Serie_Act	    = (isset($_GET['or_Numero_Serie_Act']))     ? $_GET['or_Numero_Serie_Act']      : '';
+$or_tipo_Numero_Serie_Act   = (isset($_GET['or_tipo_Numero_Serie_Act']))? $_GET['or_tipo_Numero_Serie_Act'] : 'ASC';
+$or_Nombre_Uni	            = (isset($_GET['or_Nombre_Uni']))           ? $_GET['or_Nombre_Uni']            : '';
+$or_tipo_Nombre_Uni         = (isset($_GET['or_tipo_Nombre_Uni']))      ? $_GET['or_tipo_Nombre_Uni']       : 'ASC';
+$or_Id_INS_Act	            = (isset($_GET['or_Id_INS_Act']))           ? $_GET['or_Id_INS_Act']            : '';
+$or_tipo_Id_INS_Act         = (isset($_GET['or_tipo_Id_INS_Act']))      ? $_GET['or_tipo_Id_INS_Act']       : 'ASC';
+$or_Id_UGIT_Act	            = (isset($_GET['or_Id_UGIT_Act']))          ? $_GET['or_Id_UGIT_Act']           : '';
+$or_tipo_Id_UGIT            = (isset($_GET['or_tipo_Id_UGIT']))         ? $_GET['or_tipo_Id_UGIT']          : 'ASC';
+$or_Id_Nombre_Zonas_tmp	    = (isset($_GET['or_Nombre_Zonas_tmp']))     ? $_GET['or_Nombre_Zonas_tmp']      : '';
+$or_tipo_Nombre_Zonas_tmp   = (isset($_GET['or_tipo_Nombre_Zonas_tmp']))? $_GET['or_tipo_Nombre_Zonas_tmp'] : 'ASC';
+
+
+Foto_Act
+Nombre_Act
+Marca_Act
+Modelo_Act
+Numero_Serie_Act
+Color_Act
+Descripcion_Act
+Id_Zonas_tmp_Act
+Id_Uni_Act
+Id_INS_Act
+Id_UGIT_Act
+Fecha_Recepcion_Act
+Id_OC
+Id_Factu_Act
+Costo_Act
+Desecho_Act
+Descripcion_Dese_Act
+Donacion_Act
+Descripcion_Dona_Act
+Verificado_Act
+
+
+
+
+
+
+
+
+"SELECT
+Id_Act,
+Id_Zonas_tmp_Act,
+Nombre_Zonas_tmp,
+Id_INS_Act,
+Id_UGIT_Act,
+Id_Factu_Act,
+Id_Uni_Act,
+Diminutivo_Uni,
+Fecha_Recepcion_Act,
+Nombre_Act,
+Descripcion_Act,
+Foto_Act,
+Costo_Act,
+Desecho_Act,
+Descripcion_Dese_Act,
+Donacion_Act,
+Descripcion_Dona_Act,
+Verificado_Act,
+Numero_Serie_Act,
+Marca_Act,
+Modelo_Act,
+Color_Act,
+Id_Factu,
+Numero_Factu,
+Id_Trans_Factu,
+Numero_Trans,
+Id_OC,
+Numero_OC,
+Id_Compr,
+Numero_Compr,
+Id_Parti_OC,
+Numero_Parti,
+Id_Prove,
+Nombre_Prove,
+Id_Per_Usu_Act,
+Nombre_Per,
+Apellido1_Per,
+Apellido2_Per
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

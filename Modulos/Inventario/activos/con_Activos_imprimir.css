@@ -1,0 +1,175 @@
+
+#tabla_activos{
+	font-size: 10px;
+}
+.centrado{
+	text-align: center;
+}
+a.btn_excel{
+	background-color: #1D6F42;
+	color: #FFF;
+	padding: 10px 20px;
+	margin-right: 20px;
+	text-decoration: none;
+	cursor: pointer;
+	right: 0px;
+
+}
+a.btn_excel:hover{
+	background-color: #F57900;
+	color: #FFF;
+	padding: 10px 20px;
+	margin-right: 20px;
+	text-decoration: none;
+
+}
+a.btn_pdf{
+	background-color: #AA0A00;
+	color: #fff;
+	padding: 10px 20px;
+	margin-right: 20px;
+	text-decoration: none;
+	cursor: pointer;
+	right: 0px;
+
+}
+a.btn_pdf:hover{
+	background-color: #F57900;
+	color: #FFF;
+	padding: 10px 20px;
+	margin-right: 20px;
+	text-decoration: none;
+
+}
+a.btn_aplicar{
+	background-color: #F3F3F3;
+	color: #333;
+	padding: 10px 20px;
+	margin-right: 20px;
+	text-decoration: none;
+	cursor: pointer;
+	right: 0px;
+
+}
+a.btn_aplicar:hover{
+	background-color: #F57900;
+	color: #FFF;
+	padding: 10px 20px;
+	margin-right: 20px;
+	text-decoration: none;
+
+}
+.panel-heading {
+  background-color: #D8DADD !important;
+  background-image: none !important;
+  color: #333 !important;
+  border-color:  #FFF;
+
+  margin: 0 auto;
+  border-top-left-radius: 0px;
+	border-top-right-radius: 0px;
+	width: 630px;
+}
+
+#titulo{
+	color: #FFF;
+	text-align: center;
+	font-size: 3rem;
+	text-transform: uppercase;
+}
+
+#titulos_tabla th{
+	background:#D8DADD ; 
+	color: #333;
+	box-sizing: border-box;
+	border: 1px solid #333;
+}
+#titulos_tabla th{
+	background:#D8DADD ; 
+	color: #333;
+	box-sizing: border-box;
+	border: 1px solid #333;
+}
+
+th{
+border: 1px solid #333;	
+}
+.jumbotron{
+	background:#093C70 ; 
+}
+.panel {
+  -webkit-box-shadow: none !important;
+  box-shadow: none !important;
+  border: none !important;
+}
+.panel-default {
+  border-color: none !important;
+}
+
+#titulo_marque{
+	font-size: 3rem;
+	color: #333;
+
+}
+
+#div_mostrar_ocultar{
+	background-color: #D8DADD;
+	padding: 30px;
+}
+#tabla_campos{
+	background-color: #fff;
+	width: 60%;
+	margin: 0 auto;
+}
+/****************************************/
+/**********    PRELOADER    *************/
+/****************************************/
+#preloader { 
+    position: fixed; 
+    top: 0; 
+    left: 0; 
+    z-index: 1000; 
+    background:#093C70 ; 
+    width: 100%; 
+    height: 100%; 
+    overflow:auto;
+} 
+
+#preloader_contenedor{
+
+	margin: 0 auto;
+	position: fixed;
+	top: 40%;
+	left: 45%;
+	text-align: center;
+}
+#preloader span{
+	color: #FFF;
+	text-align: center;
+	font-size: 2rem;
+}
+.lds-dual-ring {
+  display: inline-block;
+  width: 80px;
+  height: 80px;
+  
+}
+.lds-dual-ring:after {
+  content: " ";
+  display: block;
+  width: 64px;
+  height: 64px;
+  margin: 8px;
+  border-radius: 50%;
+  border: 6px solid #fed;
+  border-color: #fed transparent #fed transparent;
+  animation: lds-dual-ring 1.2s linear infinite;
+}
+@keyframes lds-dual-ring {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
